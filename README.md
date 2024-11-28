@@ -88,3 +88,44 @@
 
     lxc list # get the ip address of rabbitmqserver
     http://the_ip_address:15672/
+
+## Another Server
+
+### set and start container for general use
+
+    lxc launch images:ubuntu/24.04 first
+    lxc config set first limits.memory=500MiB
+    lxc config set first limits.cpu=4
+    lxc config device override first root size=1GiB
+    lxc restart first
+    lxc info first
+    lxc exec first -- bash
+        adduser user
+        usermod -aG sudo "user"
+        apt instal openssh-server
+        nano /etc/ssh/sshd_config
+            PubkeyAuthentication yes
+            AuthorizedKeysFile .ssh/authorized_keys
+        systemctl restart sshd
+        sudo user
+            cd ~
+            mkdir .ssh
+            touch .ssh/authorized_keys
+            nano .ssh/authorized_keys
+                paste the pub key
+            chmod 600 .ssh/authorized_keys
+            chmod 700 .ssh
+            exit
+        exit
+
+### access server
+
+    ssh user@server
+
+### dev container with LXD
+
+    - in vscode use extension remote-ssh (ms-vscode-remote.remote-ssh) to connect to server
+    - then vscode server will be installed in the server
+    - create a folder in terminal 
+    - then open the folder in vscode
+    - go to extensions and install the extension you want
