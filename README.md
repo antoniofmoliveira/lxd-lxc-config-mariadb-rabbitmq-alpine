@@ -55,7 +55,8 @@
 
 ### connect to mariadb
 
-    lxc list # get the ip address of mariadbserver
+    # get the ip address of running mariadbserver
+    lxc list | grep mariadbserver | awk '{print $6}' | sed -r 's/\([^)]*\)//'
     mysql -h the_ip_address -u user -p
 
 ## RabbitMQ
@@ -86,7 +87,8 @@
 
 ### via browser (RabbitMQ Management UI)
 
-    lxc list # get the ip address of rabbitmqserver
+    get the ip address of running rabbitmqserver
+    lxc list | grep rabbitmqserver | awk '{print $6}' | sed -r 's/\([^)]*\)//'
     http://the_ip_address:15672/
 
 ## Ubuntu Server as DevContainer
@@ -124,6 +126,8 @@
 
 ### dev container with LXD
 
+    # get the ip address of running first
+    lxc list | grep first | awk '{print $6}' | sed -r 's/\([^)]*\)//'
     - in vscode use extension remote-ssh (ms-vscode-remote.remote-ssh) to connect to server
     - then vscode server will be installed in the server
     - create a folder in terminal 
@@ -176,7 +180,8 @@
 
 ### connect to mongodb
 
-    lxc list # get the ip address of mongodbserver
+    # get the ip address of runnning mongodbserver
+    lxc list | grep mongodbserver | awk '{print $6}' | sed -r 's/\([^)]*\)//'
 
     mongosh -u user -p password the_ip_address/db
 
