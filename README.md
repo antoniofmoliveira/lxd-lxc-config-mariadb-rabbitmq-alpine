@@ -156,6 +156,8 @@
                 port: 27017
                 bindIp: mongodbserver
                 # bindIp: 127.0.0.1
+            security:
+                authorization: enabled
         systemctl restart mongod
         mongosh
             use db
@@ -174,6 +176,8 @@
 
 ### connect to mongodb
 
-    mongosh -u user -p password 10.0.179.220/db
+    lxc list # get the ip address of mongodbserver
 
-    mongodb://user:password@10.0.179.220:27017/?authSource=db
+    mongosh -u user -p password the_ip_address/db
+
+    mongodb://user:password@the_ip_address:27017/?authSource=db
