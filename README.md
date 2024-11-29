@@ -183,6 +183,10 @@
     # get the ip address of runnning mongodbserver
     lxc list | grep mongodbserver | awk '{print $6}' | sed -r 's/\([^)]*\)//'
 
-    mongosh -u user -p password the_ip_address/db
+    or
+
+    export MONGODB_IP=$(lxc list | grep mongodbserver | awk '{print $6}' | sed -r 's/\([^)]*\)//')
+
+    mongosh -u user -p password $MONGODB_IP/db --authenticationDatabase=db
 
     mongodb://user:password@the_ip_address:27017/?authSource=db
