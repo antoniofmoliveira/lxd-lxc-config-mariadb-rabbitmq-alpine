@@ -93,7 +93,7 @@
 
 ### set and start container for general use
 
-    lxc launch images:ubuntu/24.04 first
+    lxc launch ubuntu:24.04 first
     lxc config set first limits.memory=500MiB
     lxc config set first limits.cpu=4
     lxc config device override first root size=1GiB
@@ -129,3 +129,4 @@
     - create a folder in terminal 
     - then open the folder in vscode
     - go to extensions and install the extension you want
+
