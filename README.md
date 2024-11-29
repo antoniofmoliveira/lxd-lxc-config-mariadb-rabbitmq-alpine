@@ -89,7 +89,7 @@
     lxc list # get the ip address of rabbitmqserver
     http://the_ip_address:15672/
 
-## Another Server
+## Ubuntu Server as DevContainer
 
 ### set and start container for general use
 
@@ -130,3 +130,50 @@
     - then open the folder in vscode
     - go to extensions and install the extension you want
 
+## MongoDB Community Edition
+
+### set and start mongodbserver
+
+    lxc launch ubuntu:24.04 mongodbserver
+    lxc config set mongodbserver limits.memory=500MiB
+    lxc config set mongodbserver limits.cpu=4
+    lxc config device override mongodbserver root size=1GiB
+    lxc restart mongodbserver
+    lxc info mongodbserver
+
+### install mongodb
+
+    lxc exec mongodbserver -- bash
+        wget https://repo.mongodb.org/apt/ubuntu/dists/noble/mongodb-org/8.0/multiverse/binary-amd64/mongodb-org-server_8.0.3_amd64.deb -O mongodb.deb
+        wget https://downloads.mongodb.com/compass/mongodb-mongosh_2.3.4_amd64.deb -O mongosh.deb
+        dpkg -i mongodb.deb
+        dpkg -i mongosh.deb
+        systemctl enable mongod
+        systemctl start mongod
+        nano /etc/mongod.conf
+            # network interfaces
+            net:
+                port: 27017
+                bindIp: mongodbserver
+                # bindIp: 127.0.0.1
+        systemctl restart mongod
+        mongosh
+            use db
+            db.createUser(
+                {
+                    user: "use",
+                    pwd: "password", // or passwordPrompt()
+                    customData: { employeeId: 12345 },
+                    roles: [
+                        { role: "readWrite", db: "db" },
+                    ]
+                }
+            )
+        exit
+    exit
+
+### connect to mongodb
+
+    mongosh -u user -p password 10.0.179.220/db
+
+    mongodb://user:password@10.0.179.220:27017/?authSource=db
